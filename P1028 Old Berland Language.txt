@@ -1,0 +1,82 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+struct twotree{
+    bool flag=false;
+    bool isroot;
+    twotree* child[2];
+    twotree* father;
+
+    twotree()=default;
+
+    twotree(bool is, twotree* f):isroot(is),father(f){};
+
+    string allocate(int len){
+        string result="";
+        twotree* curr=this;
+        while(len>0){
+            len--;
+            if((curr->child[0])==nullptr){
+                twotree* newtree=new twotree(false,curr);
+                (curr->child[0])=newtree;
+            }
+            if((curr->child[1])==nullptr){
+                twotree* newtree=new twotree(false,curr);
+                (curr->child[1])=newtree;
+            }
+            if((curr->child[0])->flag==false){
+                result.append("0");
+                curr=curr->child[0];
+            }
+            else{
+                result.append("1");
+                curr=curr->child[1];
+            }
+        }
+        (*curr).flag=true;
+        twotree* prev=curr->father;
+        while(prev->isroot==false&&((prev->child[0])->flag==true\
+        &&(prev->child[1])->flag==true)){
+            (*prev).flag=true;
+            prev=prev->father;
+        }
+        return result;
+    }
+};
+
+int main(){
+    int space=2,n,max=0;
+    cin>>n;
+    int len[1001]={0};
+    string result[n];
+    twotree* t=new twotree(true,nullptr);
+    for(int i=0;i<n;i++){
+        int temp;
+        cin>>temp;
+        len[temp]++;
+        if(max<temp){
+            max=temp;
+        }
+    }
+    int ptr=1,r=0;
+    while(ptr<=max){
+        if(len[ptr]==0){
+            space*=2;
+            ptr++;
+            continue;
+        }
+        if(space<=0){
+            cout<<"NO";
+            return 0;
+        }
+        result[r++]=(*t).allocate(ptr);
+        space--; len[ptr]--;
+    }
+    cout<<"YES"<<endl;
+    for(int i=0;i<r;i++){
+        cout<<result[i]<<endl;
+    }
+    return 0;
+}
