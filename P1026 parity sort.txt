@@ -6,7 +6,7 @@ using namespace std;
 int main(){
     int n;
     cin>>n;
-    int odd=0,even=0,oindex[n],eindex[n];
+    int even=0,eindex[n];
     priority_queue<int> odds,evens;
     for(int i=0;i<n;i++){
         int temp;
@@ -17,7 +17,6 @@ int main(){
         }
         else{
             odds.push(temp);
-            oindex[odd++]=i;
         }
     }
     int o=2147483647,e=2147483647;
