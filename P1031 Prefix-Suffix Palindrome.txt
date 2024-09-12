@@ -1,0 +1,73 @@
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+string findleft(string s){
+    int pt=s.length()-1,lp=0;
+    string result;
+    while(pt>=0){
+        int temp=pt,lp=0;
+        while(s[lp]==s[temp]){
+            lp++; temp--;
+            if(temp<=lp){
+                result=s.substr(0,pt+1);
+                return result;
+            }
+        }
+        pt=temp-1;
+    }
+    return result;
+}
+
+string findright(string s){
+    int pt=0;
+    string result;
+    while(pt<s.length()){
+        int temp=pt,rp=s.length()-1;
+        while(s[rp]==s[temp]){
+            rp--; temp++;
+            if(temp>=rp){
+                result=s.substr(pt,s.length()-pt);
+                return result;
+            }
+        }
+        pt=temp+1;
+    }
+    return result;
+}
+
+int main(){
+    int n;
+    cin>>n;
+    for(int i=0;i<n;i++){
+        string s;
+        cin>>s;
+        int lp=0,rp=s.length()-1;
+        while(lp<rp&&s[lp]==s[rp]){
+            lp++; rp--;
+        }
+        if(lp>=rp){
+            cout<<s<<endl;
+            continue;
+        }
+        string str1,str2;
+        str1=findleft(s.substr(lp,rp-lp+1));
+        if(rp!=s.length()-1){
+            str1=s.substr(0,lp).append(str1).\
+            append(s.substr(rp+1,s.length()-rp-1));
+        }
+        str2=findright(s.substr(lp,rp-lp+1));
+        if(lp!=0){
+            str2=s.substr(0,lp).append(str2).\
+            append(s.substr(rp+1,s.length()-rp-1));
+        }
+        if(str1.length()>=str2.length()){
+            cout<<str1<<endl;
+        }
+        else{
+            cout<<str2<<endl;
+        }
+    }
+    return 0;
+}
